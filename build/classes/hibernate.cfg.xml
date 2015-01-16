@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">
+            org.hibernate.dialect.Oracle10gDialect
+        </property>
+        <property name="hibernate.connection.driver_class">
+            oracle.jdbc.driver.OracleDriver
+        </property>
+        <property name="hibernate.connection.url">
+            jdbc:oracle:thin:@ondora01.hu.nl:8521:cursus01
+        </property>
+        <property name="hibernate.connection.username">
+            tho6_2014_2c_team4
+        </property>
+        <property name="hibernate.connection.password">
+            tho6_2014_2c_team4
+        </property>
+        <property name="show_sql">true</property>
+		<mapping class="domain.Application" /> 
+		<mapping class="domain.AppTable" /> 
+		<mapping class="domain.AppColumn" /> 
+		<mapping class="domain.Operator" /> 
+		<mapping class="domain.Value" /> 
+		<mapping class="domain.Template" /> 
+		<mapping class="domain.RuleType" />  
+		<mapping class="domain.Rule" />             
+    </session-factory>
+</hibernate-configuration>
