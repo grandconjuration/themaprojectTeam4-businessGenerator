@@ -42,6 +42,9 @@ public class Application implements Serializable {
 	@Column(name = "PORT")
 	private int port;
 	
+	@Column(name = "SID")
+	private String sid;
+	
 	public Application() {}
 	
 	public Application(String name, String code, String ipAdres, String username, String password){
@@ -106,5 +109,13 @@ public class Application implements Serializable {
 	
 	public int getPort(){
 		return port;
+	}
+	
+	public void setSID(String s){
+		this.sid = s;
+	}
+	
+	public String getSID() {
+		return sid;
 	}
 }
