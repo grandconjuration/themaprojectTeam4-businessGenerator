@@ -28,7 +28,7 @@ public class AppColumn {
 	private AppTable table;
 	
 	@Column (name= "COLUMNNUMBER")
-	private int columnNumber;
+	private Integer columnNumber;
 	
 	public AppColumn()	{}
 	
