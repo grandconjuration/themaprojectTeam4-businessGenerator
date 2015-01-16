@@ -36,6 +36,12 @@ public class Application implements Serializable {
 	@Column(name = "PASSWORD")	
 	private String password;
 	
+	@Column(name = "DATABASETYPE")
+	private String databaseType;
+	
+	@Column(name = "PORT")
+	private int port;
+	
 	public Application() {}
 	
 	public Application(String name, String code, String ipAdres, String username, String password){
@@ -84,5 +90,21 @@ public class Application implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public void setDatabaseType(String type) {
+		this.databaseType = type;
+	}
+	
+	public String getDatabaseType() {
+		return databaseType;
+	}
+	
+	public void setPort(int portnr){
+		this.port = portnr;
+	}
+	
+	public int getPort(){
+		return port;
 	}
 }

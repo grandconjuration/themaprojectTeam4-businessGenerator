@@ -1,5 +1,6 @@
 package domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,7 +27,7 @@ public class Template {
 	@Column(name = "DATABASETYPE")
 	private String databaseType;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "RULETYPE_ID")
 	private RuleType ruletype;
 

@@ -27,6 +27,9 @@ public class AppColumn {
 	@JoinColumn(name = "TABLE_ID", nullable = false)
 	private AppTable table;
 	
+	@Column (name= "COLUMNNUMBER")
+	private int columnNumber;
+	
 	public AppColumn()	{}
 	
 	public AppColumn(String name, String type, int id, AppTable tabel){

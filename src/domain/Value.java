@@ -26,7 +26,7 @@ public class Value {
 	@Column(name = "VALUENUMBER")
 	private int valueNumber;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "RULE_ID")	
 	private Rule rule;
 
@@ -71,6 +71,14 @@ public class Value {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public void setRule(Rule r){
+		this.rule = r;
+	}
+	
+	public Rule getRule(){
+		return rule;
 	}
 	
 	

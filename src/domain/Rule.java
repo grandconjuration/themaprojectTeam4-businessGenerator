@@ -27,9 +27,6 @@ public class Rule {
 	@Column(name = "TOBEGENERATED")
 	private Boolean toBeGenerated = false;
 
-//	@Column(name = "NAME")
-	//private String name;
-
 	@Column(name = "CODE")
 	private String code;
 
@@ -84,15 +81,7 @@ public class Rule {
 	public void addValue(Value value) {
 		allValues.add(value);
 	}
-/*
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-*/
+	
 	public String getCode() {
 		return code;
 	}
