@@ -37,19 +37,20 @@ import domain.Value;
 public class Hello {
 
   // This method is called if TEXT_PLAIN is request
-  @GET
+/* 
+	@GET
   @Produces(MediaType.TEXT_PLAIN)
   public String sayPlainTextHello() {
     return "Hello Jersey";
   }
-
+*/
   // This method is called if XML is request
-  @GET
+ /* @GET
   @Produces(MediaType.TEXT_XML)
   public String sayXMLHello() {
     return "<?xml version=\"1.0\"?>" + "<hello> Hello Jersey" + "</hello>";
   }
-
+*/
   // This method is called if HTML is request
   @GET
   @Produces(MediaType.TEXT_HTML)

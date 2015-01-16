@@ -16,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import domain.Value;
+
 @Entity
 @Table(name = "RULE")
 public class Rule {
@@ -160,6 +162,26 @@ public class Rule {
 
 	public void setOperator(Operator operator) {
 		this.operator = operator;
+	}
+	
+	public String returnValue(int number){
+		String s = null;
+		for (Value v : allValues){
+			if(v.getValueNumber() == number){
+				s = v.getValue();
+			}
+		}
+		return s;
+	}
+	
+	public String returnColumn(int number){
+		String s = null;
+		for (AppColumn c : allColumns){
+			if(c.getId() == number){
+				s = c.getName();
+			}
+		}
+		return s;
 	}
 
 }
