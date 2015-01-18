@@ -1,39 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src" />
-	<classpathentry kind="con"
-		path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v6.0">
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v6.0">
 		<attributes>
-			<attribute name="owner.project.facets" value="jst.web;#system#" />
+			<attribute name="owner.project.facets" value="jst.web;#system#"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con"
-		path="org.eclipse.jst.j2ee.internal.web.container" />
-	<classpathentry kind="con"
-		path="org.eclipse.jst.j2ee.internal.module.container" />
-	<classpathentry kind="con"
-		path="org.eclipse.datatools.connectivity.jdt.DRIVERLIBRARY/Oracle Thin Driver" />
-	<classpathentry kind="con"
-		path="org.eclipse.jdt.USER_LIBRARY/hibernate">
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="con" path="org.eclipse.datatools.connectivity.jdt.DRIVERLIBRARY/Oracle Thin Driver"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/hibernate">
 		<attributes>
-			<attribute name="org.eclipse.jst.component.nondependency"
-				value="" />
-			<attribute name="owner.project.facets" value="jpt.jpa" />
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+			<attribute name="owner.project.facets" value="jpt.jpa"/>
 		</attributes>
 	</classpathentry>
-<<<<<<< HEAD
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey/jersey-bundle-1.18.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_25"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk7"/>
 	<classpathentry kind="output" path="build/classes"/>
-=======
-	<classpathentry kind="con"
-		path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk7">
-		<attributes>
-			<attribute name="owner.project.facets" value="java" />
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib"
-		path="WebContent/WEB-INF/lib/jersey/jersey-bundle-1.18.jar" />
-	<classpathentry kind="output" path="build/classes" />
->>>>>>> 95656c8deb133d1d11b3dac0a5d6d9306f36e935
 </classpath>
