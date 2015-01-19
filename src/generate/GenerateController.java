@@ -38,7 +38,9 @@ public class GenerateController {
 			tx = hibernateSession.beginTransaction();
 			@SuppressWarnings(value = { "unchecked" })
 			List<AppTable> tables = hibernateSession.createQuery(
-					"FROM AppTable").list();
+					"FROM AppTable WHERE id = :appid")
+					.setParameter("appid", idApp)
+					.list();
 			for (AppTable table : tables) {
 				int tableId = table.getId();
 				System.out.println("Table: " + table.getName());
@@ -64,7 +66,6 @@ public class GenerateController {
 				}
 
 			}
-			tx.commit();
 
 			System.out.println(rules.size());
 			for (Rule rule : rules) {
@@ -79,6 +80,7 @@ public class GenerateController {
 					list.add(generatedCode);
 				}
 			}
+			tx.commit();
 
 		} catch (HibernateException e) {
 			if (tx != null)
