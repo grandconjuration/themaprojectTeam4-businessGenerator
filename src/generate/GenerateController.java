@@ -1,41 +1,93 @@
 package generate;
 
-import java.util.ArrayList;
+import hibernate.HibernateConnector;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+
+import domain.AppColumn;
+import domain.AppTable;
 import domain.Application;
 import domain.Rule;
 
 public class GenerateController {
-	private ArrayList<Rule> allRules = new ArrayList<Rule>();
 	private Parser parser;
 	private Writer writer;
+	private Session hibernateSession;
 
 	public GenerateController() {
 		parser = new Parser();
-		
+		SessionFactory factory = new HibernateConnector().getSessionFactory();
+		hibernateSession = factory.openSession();
+
 	}
 
 	public ArrayList<String> generate(int idApp) {
+		Transaction tx = null;
+		List<Rule> rules = new ArrayList<Rule>();
 		ArrayList<String> list = new ArrayList<String>();
-		for (Rule r : allRules) {
-			if (r.isToBeGenerated()) {
-				r.setCode(parser.generateCode(r));
-				list.add(parser.generateCode(r));
+
+		try {
+			tx = hibernateSession.beginTransaction();
+			@SuppressWarnings(value = { "unchecked" })
+			List<AppTable> tables = hibernateSession.createQuery(
+					"FROM AppTable").list();
+			for (AppTable table : tables) {
+				int tableId = table.getId();
+				System.out.println("Table: " + table.getName());
+				@SuppressWarnings(value = { "unchecked" })
+				List<AppColumn> cols = hibernateSession
+						.createQuery("FROM AppColumn WHERE table = :tableid")
+						.setParameter("tableid", table).list();
+				for (AppColumn col : cols) {
+					System.out.println("Column: " + col.getName() + "(id:"
+							+ col.getId() + ")");
+					Query query = hibernateSession
+							.createSQLQuery("SELECT RULE_ID FROM RULECOLUMNS WHERE COLUMN_ID = :colid");
+					List ruleIdList = query.setParameter("colid", col.getId())
+							.list();
+					for (Object id : ruleIdList) {
+						Rule foundRule = new Rule();
+						hibernateSession.load(foundRule,
+								Integer.parseInt(id.toString()));
+						if (foundRule.isToBeGenerated() == true) {
+							rules.add(foundRule);
+						}
+					}
+				}
+
 			}
+			tx.commit();
+
+			System.out.println(rules.size());
+			for (Rule rule : rules) {
+				System.out.println(rule.getErrorMessage());
+			}
+
+			for (Rule r : rules) {
+				if (r.isToBeGenerated()) {
+					String generatedCode = parser.generateCode(r);
+					r.setGeneratedCode(generatedCode);
+					hibernateSession.save(r);
+					list.add(generatedCode);
+				}
+			}
+
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			hibernateSession.close();
 		}
 		return list;
-	}
-
-	public void addRule(Rule rule) {
-		allRules.add(rule);
-	}
-
-	public ArrayList<Rule> getAllRules() {
-		return allRules;
-	}
-
-	public void setAllRules(ArrayList<Rule> allRules) {
-		this.allRules = allRules;
 	}
 
 	public Parser getParser() {
@@ -47,10 +99,9 @@ public class GenerateController {
 	}
 
 	public Writer getWriter(String a) {
-		if ( a.equals("mysql")){
+		if (a.equals("mysql")) {
 			writer = new MySQLWriter();
-		}
-		else if ( a.equals("oracle")){
+		} else if (a.equals("oracle")) {
 			writer = new OracleWriter();
 		}
 		return writer;
@@ -59,6 +110,5 @@ public class GenerateController {
 	public void setWriter(Writer writer) {
 		this.writer = writer;
 	}
-	
 
 }

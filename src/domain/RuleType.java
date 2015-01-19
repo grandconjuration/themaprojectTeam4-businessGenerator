@@ -32,8 +32,8 @@ public class RuleType {
 	@Column(name = "NUMBEROFVALUES")
 	private int numberOfValues;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ruletype", cascade = CascadeType.ALL)
-	private List<Template> allTemplates = new ArrayList<Template>();
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "ruletype", cascade = CascadeType.ALL)
+	private List<Template> allTemplates;
 
 	public RuleType() {
 

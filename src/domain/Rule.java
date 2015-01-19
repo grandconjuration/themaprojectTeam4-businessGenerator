@@ -41,11 +41,11 @@ public class Rule {
 	@Column(name = "GENERATEDCODE")
 	private String generatedCode;
 
-	@ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
 	@JoinTable(name = "RULECOLUMNS", joinColumns = @JoinColumn(name = "RULE_ID"), inverseJoinColumns = @JoinColumn(name = "COLUMN_ID"))
 	private List<AppColumn> allColumns = new ArrayList<AppColumn>();
 
-	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "rule")
+	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "rule")
 	private List<Value> allValues = new ArrayList<Value>();
 
 	@OneToOne(cascade = CascadeType.ALL)
