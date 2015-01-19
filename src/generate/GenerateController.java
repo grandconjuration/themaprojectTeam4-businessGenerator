@@ -15,10 +15,11 @@ public class GenerateController {
 		
 	}
 
-	public ArrayList<String> generate() {
+	public ArrayList<String> generate(int idApp) {
 		ArrayList<String> list = new ArrayList<String>();
 		for (Rule r : allRules) {
 			if (r.isToBeGenerated()) {
+				r.setCode(parser.generateCode(r));
 				list.add(parser.generateCode(r));
 			}
 		}

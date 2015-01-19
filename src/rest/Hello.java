@@ -1,5 +1,6 @@
 package rest;
 
+import generate.GenerateController;
 import hibernate.HibernateConnector;
 
 import java.util.List;
@@ -60,7 +61,53 @@ public class Hello {
 		Transaction tx = null;
 
 		try {
-			tx = hibernateSession.beginTransaction();
+			Rule rule1 = new Rule();
+			AppColumn column1 = new AppColumn();
+			rule1.addColumn(column1);
+			AppTable table1 = new AppTable();
+			column1.setTable(table1);
+			Operator operator1 = new Operator();
+			rule1.setOperator(operator1);
+			Value value1 = new Value();
+			Value value2 = new Value();
+			rule1.addValue(value1);
+			rule1.addValue(value2);
+			RuleType ruleType1 = new RuleType();
+			rule1.setRuleType(ruleType1);
+			Application application1 = new Application();
+			table1.setApplication(application1);
+			Template template1 = new Template();
+			ruleType1.addTemplate(template1);
+
+			rule1.setErrorMessage("GAAT IETS NIET GOED JONGENS!");
+			rule1.setToBeGenerated(true);
+			rule1.setId(25);
+			ruleType1.setCode("RNG");
+			table1.setName("PRODUCT");
+			table1.setCode("TAB");
+			column1.setName("PRIJS");
+			application1.setCode("APP");
+			application1.setDatabaseType("Oracle");
+			operator1.setCode("BETWEEN");
+			value1.setValue("1");
+			value1.setValueNumber(0);
+			value2.setValue("3");
+			value2.setValueNumber(1);
+			template1.setCode(" << 0 create or replace trigger << 1 Rule_code "
+					+ "<< 0 before insert or update on << 1 Table_name "
+					+ "<< 0 for each row declare l_error_stack varchar2(255); "
+					+ "l_passed boolean := true; begin l_passed := << 1 Column_name "
+					+ "<< 1 Operator_code << 1 Value_value << 0 and << 1 Value_value "
+					+ "<< 0 ; if not l_passed then l_error_stack := l_error_stack || ' "
+					+ "<< 1 Rule_errorMessage << 0 '; end if; if l_error_stack is not null "
+					+ "then raise_application_error(-20800, l_error_stack); end if; "
+					+ "end << 1 Rule_code << 0 ;");
+			template1.setDatabaseType("Oracle");
+			
+			GenerateController generateController = new GenerateController();
+			generateController.addRule(rule1);
+			generateController.generate();
+			/*tx = hibernateSession.beginTransaction();
 			Application app = new Application();
 			hibernateSession.load(app, 1);
 			System.out.println(app.getName());
@@ -106,7 +153,7 @@ public class Hello {
 			for(Value v : vlist){
 				System.out.println("Value " + j + ": " + v.getValue());
 				j++;
-			}
+			}*/
 
 		} catch (HibernateException e) {
 			if (tx != null) {
