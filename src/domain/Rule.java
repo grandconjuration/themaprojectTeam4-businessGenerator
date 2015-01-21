@@ -1,7 +1,9 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -41,9 +43,12 @@ public class Rule {
 	@Column(name = "GENERATEDCODE")
 	private String generatedCode;
 
-	@ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-	@JoinTable(name = "RULECOLUMNS", joinColumns = @JoinColumn(name = "RULE_ID"), inverseJoinColumns = @JoinColumn(name = "COLUMN_ID"))
-	private List<AppColumn> allColumns = new ArrayList<AppColumn>();
+//	@ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+//	@JoinTable(name = "RULECOLUMNS", joinColumns = @JoinColumn(name = "RULE_ID"), inverseJoinColumns = @JoinColumn(name = "COLUMN_ID"))
+//	private List<AppColumn> allColumns = new ArrayList<AppColumn>();
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "pk.rule", cascade = CascadeType.ALL)
+	private Set<RuleColumn> ruleColumns = new HashSet<RuleColumn>();
 
 	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "rule")
 	private List<Value> allValues = new ArrayList<Value>();
@@ -62,7 +67,7 @@ public class Rule {
 
 	public Rule(String name, String code, String description,
 			String errorMessage, String generatedCode, boolean toBeGenerated,
-			int id, List<AppColumn> allColumns, List<Value> allValues,
+			int id, Set<RuleColumn> allRuleColumns, List<Value> allValues,
 			RuleType ruleType, Operator operator) {
 		setCode(code);
 		setDescription(description);
@@ -70,14 +75,14 @@ public class Rule {
 		setGeneratedCode(generatedCode);
 		setToBeGenerated(toBeGenerated);
 		setId(id);
-		setAllColumns(allColumns);
+		setAllRuleColumns(allRuleColumns);
 		setAllValues(allValues);
 		setRuleType(ruleType);
 		setOperator(operator);
 	}
 
-	public void addColumn(AppColumn column) {
-		allColumns.add(column);
+	public void addRuleColumn(RuleColumn rc) {
+		ruleColumns.add(rc);
 	}
 
 	public void addValue(Value value) {
@@ -132,12 +137,12 @@ public class Rule {
 		this.id = id;
 	}
 
-	public List<AppColumn> getAllColumns() {
-		return allColumns;
+	public Set<RuleColumn> getAllRuleColumns() {
+		return this.ruleColumns;
 	}
 
-	public void setAllColumns(List<AppColumn> allColumns) {
-		this.allColumns = allColumns;
+	public void setAllRuleColumns(Set<RuleColumn> rc) {
+		this.ruleColumns = rc;
 	}
 
 	public List<Value> getAllValues() {
@@ -176,9 +181,9 @@ public class Rule {
 	
 	public String returnColumn(int number){
 		String s = null;
-		for (AppColumn c : allColumns){
-			if(c.getId() == number){
-				s = c.getName();
+		for (RuleColumn c : this.ruleColumns){
+			if(c.getColumn().getId() == number){
+				s = c.getColumn().getName();
 			}
 		}
 		return s;

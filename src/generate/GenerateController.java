@@ -16,6 +16,8 @@ import domain.AppColumn;
 import domain.AppTable;
 import domain.Application;
 import domain.Rule;
+import domain.RuleColumn;
+import domain.RuleColumnPK;
 
 public class GenerateController {
 	private Parser parser;
@@ -42,7 +44,6 @@ public class GenerateController {
 					.setParameter("appid", idApp)
 					.list();
 			for (AppTable table : tables) {
-				int tableId = table.getId();
 				System.out.println("Table: " + table.getName());
 				@SuppressWarnings(value = { "unchecked" })
 				List<AppColumn> cols = hibernateSession
@@ -59,6 +60,7 @@ public class GenerateController {
 						Rule foundRule = new Rule();
 						hibernateSession.load(foundRule,
 								Integer.parseInt(id.toString()));
+						System.out.println("Rule id: " + foundRule.getId());
 						if (foundRule.isToBeGenerated() == true) {
 							rules.add(foundRule);
 						}
@@ -76,11 +78,14 @@ public class GenerateController {
 				if (r.isToBeGenerated()) {
 					String generatedCode = parser.generateCode(r);
 					r.setGeneratedCode(generatedCode);
-					hibernateSession.save(r);
+					hibernateSession.saveOrUpdate(r);
 					list.add(generatedCode);
 				}
 			}
+			
 			tx.commit();
+
+			hibernateSession.flush();
 
 		} catch (HibernateException e) {
 			if (tx != null)
@@ -89,6 +94,8 @@ public class GenerateController {
 		} finally {
 			hibernateSession.close();
 		}
+		
+		
 		return list;
 	}
 

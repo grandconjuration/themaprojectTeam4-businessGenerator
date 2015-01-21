@@ -28,5 +28,7 @@
 		<mapping class="domain.Template" />
 		<mapping class="domain.RuleType" />
 		<mapping class="domain.Rule" />
+		<mapping class="domain.RuleColumn" />
+		<mapping class="domain.RuleColumnPK" />
 	</session-factory>
 </hibernate-configuration>
