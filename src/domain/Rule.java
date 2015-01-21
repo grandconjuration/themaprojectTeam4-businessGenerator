@@ -31,7 +31,7 @@ public class Rule {
 	@Column(name = "TOBEGENERATED")
 	private Boolean toBeGenerated = false;
 
-	@Column(name = "CODE")
+	@Column(name = "CODE", nullable = true)
 	private String code;
 
 	@Column(name = "DESCRIPTION")
@@ -53,13 +53,46 @@ public class Rule {
 	@OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "rule")
 	private List<Value> allValues = new ArrayList<Value>();
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "RULETYPE_ID", nullable = false)
 	private RuleType ruleType;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "OPERATOR_ID", nullable = false)
+	@OneToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "OPERATOR_ID", nullable = true)
 	private Operator operator;
+	
+	@JoinColumn(name ="INSERTTRIGGER")
+	private Boolean insertTrigger = false;
+	
+	@JoinColumn(name = "UPDATETRIGGER")
+	private Boolean updateTrigger = false;
+	
+	@JoinColumn(name = "DELETETRIGGER")
+	private Boolean deleteTrigger = false;
+
+	public Boolean getInsertTrigger() {
+		return insertTrigger;
+	}
+
+	public void setInsertTrigger(Boolean insertTrigger) {
+		this.insertTrigger = insertTrigger;
+	}
+
+	public Boolean getUpdateTrigger() {
+		return updateTrigger;
+	}
+
+	public void setUpdateTrigger(Boolean updateTrigger) {
+		this.updateTrigger = updateTrigger;
+	}
+
+	public Boolean getDeleteTrigger() {
+		return deleteTrigger;
+	}
+
+	public void setDeleteTrigger(Boolean deleteTrigger) {
+		this.deleteTrigger = deleteTrigger;
+	}
 
 	public Rule() {
 
@@ -182,11 +215,22 @@ public class Rule {
 	public String returnColumn(int number){
 		String s = null;
 		for (RuleColumn c : this.ruleColumns){
-			if(c.getColumn().getId() == number){
+			if(c.getNumber() == number){
 				s = c.getColumn().getName();
 			}
 		}
 		return s;
+	}
+	
+	public AppColumn getColumnByNumber(int number) {
+		AppColumn aCol = null;
+		for (RuleColumn c : this.getAllRuleColumns()) {
+			if(c.getNumber() == number) {
+				aCol = c.getColumn();
+			}
+		}
+		return aCol;
+		
 	}
 
 }

@@ -3,6 +3,7 @@ package generate;
 import java.util.Scanner;
 
 import domain.Rule;
+import domain.RuleColumn;
 import domain.Value;
 
 public class Parser {
@@ -42,7 +43,7 @@ public class Parser {
 	}
 
 	public String getTemplate(Rule rule) {
-		String type = rule.getAllColumns().get(0).getTable().getApplication().getDatabaseType();
+		String type = rule.getColumnByNumber(0).getTable().getApplication().getDatabaseType();
 		return rule.getRuleType().searchTemplate(type).getCode();
 	}
 
@@ -50,7 +51,7 @@ public class Parser {
 		String s = "";
 
 		switch (request) {
-			case "Table_name": s = rule.getAllColumns().get(0).getTable().getName(); break;
+			case "Table_name": s = rule.getColumnByNumber(0).getTable().getName(); break;
 			case "Column_name": s = getColumn(rule); break;
 			case "Value_value":	s = getValue(rule); break;
 			case "Value_all": s = getAllValues(rule); break;
@@ -66,8 +67,8 @@ public class Parser {
 	// complete ruleCode
 	public String getRuleCode(Rule rule) {
 		String ruleCode = "BRG_";
-		ruleCode += rule.getAllColumns().get(0).getTable().getApplication().getCode();
-		ruleCode += "_" + rule.getAllColumns().get(0).getTable().getCode();
+		ruleCode += rule.getColumnByNumber(0).getTable().getApplication().getCode();
+		ruleCode += "_" + rule.getColumnByNumber(0).getTable().getCode();
 		ruleCode += "_CNS_" + rule.getRuleType().getCode() + "_";
 		ruleCode += rule.getId();
 		return ruleCode;

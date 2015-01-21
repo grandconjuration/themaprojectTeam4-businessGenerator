@@ -38,10 +38,13 @@ public class GenerateController {
 
 		try {
 			tx = hibernateSession.beginTransaction();
+			
+			Application application = new Application();
+			hibernateSession.load(application, idApp);
 			@SuppressWarnings(value = { "unchecked" })
 			List<AppTable> tables = hibernateSession.createQuery(
-					"FROM AppTable WHERE id = :appid")
-					.setParameter("appid", idApp)
+					"FROM AppTable WHERE application = :appid")
+					.setParameter("appid", application)
 					.list();
 			for (AppTable table : tables) {
 				System.out.println("Table: " + table.getName());
@@ -56,11 +59,17 @@ public class GenerateController {
 							.createSQLQuery("SELECT RULE_ID FROM RULECOLUMNS WHERE COLUMN_ID = :colid");
 					List ruleIdList = query.setParameter("colid", col.getId())
 							.list();
+					hibernateSession.clear();
 					for (Object id : ruleIdList) {
 						Rule foundRule = new Rule();
 						hibernateSession.load(foundRule,
 								Integer.parseInt(id.toString()));
 						System.out.println("Rule id: " + foundRule.getId());
+					//	System.out.println("id num: " + id.toString());
+						System.out.println("insert trigger: " + foundRule.getInsertTrigger());
+						System.out.println("update trigger: " + foundRule.getUpdateTrigger());;
+						System.out.println("delete trigger: " + foundRule.getDeleteTrigger());
+						System.out.println("ruletypename: " + foundRule.getRuleType().getName());
 						if (foundRule.isToBeGenerated() == true) {
 							rules.add(foundRule);
 						}
