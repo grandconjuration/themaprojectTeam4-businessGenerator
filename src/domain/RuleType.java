@@ -29,8 +29,8 @@ public class RuleType {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
-	@Column(name = "NUMBEROFVALUES")
-	private int numberOfValues;
+	@Column(name = "NUMBEROFVALUES", nullable = true)
+	private Integer numberOfValues;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "ruletype", cascade = CascadeType.ALL)
 	private List<Template> allTemplates;
@@ -93,11 +93,11 @@ public class RuleType {
 		this.description = description;
 	}
 
-	public int getNumberOfValues() {
+	public Integer getNumberOfValues() {
 		return numberOfValues;
 	}
 
-	public void setNumberOfValues(int numberOfValues) {
+	public void setNumberOfValues(Integer numberOfValues) {
 		this.numberOfValues = numberOfValues;
 	}
 
