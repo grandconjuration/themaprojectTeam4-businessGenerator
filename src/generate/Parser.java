@@ -8,7 +8,7 @@ import domain.Value;
 
 public class Parser {
 	private int numberOfValues, numberOfColumns;
-	
+
 	public Parser() {
 
 	}
@@ -21,7 +21,7 @@ public class Parser {
 		rule.setCode(getRuleCode(rule));
 		String newRule = "";
 
-		Scanner s = new Scanner(r).useDelimiter("\\s<<\\s*");
+		Scanner s = new Scanner(r).useDelimiter("\\<<\\s*");
 		while (s.hasNext()) {
 			String x = s.next();
 			if (x.charAt(0) == '0') {
@@ -32,7 +32,7 @@ public class Parser {
 				x = x.replace("1 ", "");
 				x = x.trim();
 				String temp = getVariable(x, rule);
-				//System.out.println("temp "+ x);
+				// System.out.println("temp "+ x);
 				newRule += temp + " ";
 				// System.out.println("VARIABELE " + x);
 			}
@@ -43,7 +43,8 @@ public class Parser {
 	}
 
 	public String getTemplate(Rule rule) {
-		String type = rule.getColumnByNumber(0).getTable().getApplication().getDatabaseType();
+		String type = rule.getColumnByNumber(0).getTable().getApplication()
+				.getDatabaseType();
 		return rule.getRuleType().searchTemplate(type).getCode();
 	}
 
@@ -51,13 +52,30 @@ public class Parser {
 		String s = "";
 
 		switch (request) {
-			case "Table_name": s = rule.getColumnByNumber(0).getTable().getName(); break;
-			case "Column_name": s = getColumn(rule); break;
-			case "Value_value":	s = getValue(rule); break;
-			case "Value_all": s = getAllValues(rule); break;
-			case "Operator_code": s = rule.getOperator().getCode();	break;
-			case "Rule_code": s = rule.getCode(); break;
-			case "Rule_errorMessage": s = rule.getErrorMessage(); break;
+			case "Table_name":
+				s = rule.getColumnByNumber(0).getTable().getName();
+				break;
+			case "Column_name":
+				s = getColumn(rule);
+				break;
+			case "Value_value":
+				s = getValue(rule);
+				break;
+			case "Value_all":
+				s = getAllValues(rule);
+				break;
+			case "Operator_code":
+				s = rule.getOperator().getCode();
+				break;
+			case "Rule_code":
+				s = rule.getCode();
+				break;
+			case "Rule_errorMessage":
+				s = rule.getErrorMessage();
+				break;
+			case "Rule_trigger":
+				s = getAllTriggers(rule);
+				break;
 		}
 
 		return s;
@@ -67,7 +85,8 @@ public class Parser {
 	// complete ruleCode
 	public String getRuleCode(Rule rule) {
 		String ruleCode = "BRG_";
-		ruleCode += rule.getColumnByNumber(0).getTable().getApplication().getCode();
+		ruleCode += rule.getColumnByNumber(0).getTable().getApplication()
+				.getCode();
 		ruleCode += "_" + rule.getColumnByNumber(0).getTable().getCode();
 		ruleCode += "_CNS_" + rule.getRuleType().getCode() + "_";
 		ruleCode += rule.getId();
@@ -87,13 +106,28 @@ public class Parser {
 		numberOfColumns++;
 		return s;
 	}
-	
-	public String getAllValues(Rule rule){
+
+	public String getAllValues(Rule rule) {
 		String s = "";
-		for(Value v: rule.getAllValues()){
+		for (Value v : rule.getAllValues()) {
 			s += v.getValue() + ", ";
 		}
-		s = s.substring(0, s.length()-2);
+		s = s.substring(0, s.length() - 2);
+		return s;
+	}
+
+	public String getAllTriggers(Rule rule) {
+		String s = "";
+		if (rule.getUpdateTrigger() != false) {
+			s += " update or ";
+		}
+		if (rule.getInsertTrigger() != false) {
+			s += " insert or ";
+		}
+		if (rule.getDeleteTrigger() != false) {
+			s += " delete or ";
+		}
+		s = s.substring(0, s.length() - 3);
 		return s;
 	}
 }
