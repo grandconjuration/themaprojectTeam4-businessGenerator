@@ -108,11 +108,12 @@ public class Parser {
 	}
 
 	public String getAllValues(Rule rule) {
-		String s = "";
+		String s = "(";
 		for (Value v : rule.getAllValues()) {
 			s += v.getValue() + ", ";
 		}
 		s = s.substring(0, s.length() - 2);
+		s += ")";
 		return s;
 	}
 

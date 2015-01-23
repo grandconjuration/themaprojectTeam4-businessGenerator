@@ -91,10 +91,15 @@ public class GenerateController {
 					list.add(generatedCode);
 				}
 			}
-			
-			tx.commit();
 
+			tx.commit();
 			hibernateSession.flush();
+			
+			Writer newWriter = this.getWriter(application.getDatabaseType());
+			
+			for(String rule : list) {
+				newWriter.writeToDataBase(application, rule);
+			}
 
 		} catch (HibernateException e) {
 			if (tx != null)
