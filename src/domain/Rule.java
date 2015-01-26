@@ -209,7 +209,7 @@ public class Rule {
 		this.writeToDb = writeToDb;
 	}	
 	
-	public String returnValue(int number){
+	public String returnValueString(int number){
 		String s = null;
 		for (Value v : allValues){
 			if(v.getValueNumber() == number){
@@ -219,7 +219,17 @@ public class Rule {
 		return s;
 	}
 	
-	public String returnColumn(int number){
+	public Value returnValue(int number){
+		Value val = null;
+		for (Value v : allValues){
+			if(v.getValueNumber() == number){
+				val = v;
+			}
+		}
+		return val;
+	}	
+	
+	public String returnColumnString(int number){
 		String s = null;
 		for (RuleColumn c : this.ruleColumns){
 			if(c.getNumber() == number){
@@ -228,6 +238,16 @@ public class Rule {
 		}
 		return s;
 	}
+	
+	public AppColumn returnColumn(int number){
+		AppColumn col = null;
+		for (RuleColumn c : this.ruleColumns){
+			if(c.getNumber() == number){
+				col = c.getColumn();
+			}
+		}
+		return col;
+	}	
 	
 	public AppColumn getColumnByNumber(int number) {
 		AppColumn aCol = null;

@@ -95,14 +95,20 @@ public class Parser {
 
 	public String getValue(Rule rule) {
 		String s = "";
-		s = rule.returnValue(numberOfValues);
+		Value val = rule.returnValue(numberOfValues);
+		if(val.getType().equals("Char") || val.getType().equals("String")) {
+			s += "'" + val.getValue() + "'";
+		} else { 
+			s += val.getValue();
+		}
+		//s = rule.returnValueString(numberOfValues);
 		numberOfValues++;
 		return s;
 	}
 
 	public String getColumn(Rule rule) {
-		String s = "";
-		s = rule.returnColumn(numberOfColumns);
+		String s = ":NEW.";
+		s = s + rule.returnColumnString(numberOfColumns);
 		numberOfColumns++;
 		return s;
 	}
@@ -110,7 +116,11 @@ public class Parser {
 	public String getAllValues(Rule rule) {
 		String s = "(";
 		for (Value v : rule.getAllValues()) {
-			s += v.getValue() + ", ";
+			if(v.getType().equals("Char") || v.getType().equals("String")) {
+				s += "'" + v.getValue() + "', ";
+			} else { 
+				s += v.getValue() + ", ";
+			}
 		}
 		s = s.substring(0, s.length() - 2);
 		s += ")";
