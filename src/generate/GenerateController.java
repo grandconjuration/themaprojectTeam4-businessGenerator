@@ -55,7 +55,7 @@ public class GenerateController {
 					System.out.println("Column: " + col.getName() + "(id:"
 							+ col.getId() + ")");
 					Query query = hibernateSession
-							.createSQLQuery("SELECT RULE_ID FROM RULECOLUMNS WHERE COLUMN_ID = :colid");
+							.createSQLQuery("SELECT DISTINCT RULE_ID FROM RULECOLUMNS WHERE COLUMN_ID = :colid");
 					List ruleIdList = query.setParameter("colid", col.getId())
 							.list();
 					hibernateSession.clear();

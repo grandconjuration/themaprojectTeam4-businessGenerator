@@ -24,12 +24,12 @@ public class Parser {
 		Scanner s = new Scanner(r).useDelimiter("\\<<\\s*");
 		while (s.hasNext()) {
 			String x = s.next();
-			if (x.charAt(0) == '0') {
-				x = x.replace("0 ", "");
+			if (x.charAt(0) == '#' && x.charAt(1) == '0') {
+				x = x.replace("#0", "");
 				newRule += x + " ";
 				// System.out.println("TEKST " + x);
-			} else if (x.charAt(0) == '1') {
-				x = x.replace("1 ", "");
+			} else if (x.charAt(0) == '#' && x.charAt(1) == '1') {
+				x = x.replace("#1 ", "");
 				x = x.trim();
 				String temp = getVariable(x, rule);
 				// System.out.println("temp "+ x);
@@ -162,14 +162,14 @@ public class Parser {
 	
 	public String getTableNew(Rule rule){
 		String s = "";
-		AppColumn a = rule.returnColumn(0);
+		AppColumn a = rule.returnColumn(2);
 		s += a.getTable().getName();
 		return s;
 	}
 	
 	public String getTableComp(Rule rule){
 		String s = "";
-		AppColumn a = rule.returnColumn(2);
+		AppColumn a = rule.returnColumn(0);
 		s += a.getTable().getName();
 		return s;
 	}
@@ -199,6 +199,7 @@ public class Parser {
 		String s = ":NEW.";
 		AppColumn a = rule.returnColumn(0);
 		s += a.getName();
+		System.out.println("kaas is saak: sssssssssssssssssssssssssssssssssss" + a.getName());
 		return s;
 	}
 }
