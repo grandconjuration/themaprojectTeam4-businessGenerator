@@ -37,14 +37,13 @@ public class GenerateController {
 
 		try {
 			tx = hibernateSession.beginTransaction();
-			
+
 			Application application = new Application();
 			hibernateSession.load(application, idApp);
 			@SuppressWarnings(value = { "unchecked" })
-			List<AppTable> tables = hibernateSession.createQuery(
-					"FROM AppTable WHERE application = :appid")
-					.setParameter("appid", application)
-					.list();
+			List<AppTable> tables = hibernateSession
+					.createQuery("FROM AppTable WHERE application = :appid")
+					.setParameter("appid", application).list();
 			for (AppTable table : tables) {
 				System.out.println("Table: " + table.getName());
 				@SuppressWarnings(value = { "unchecked" })
@@ -64,13 +63,20 @@ public class GenerateController {
 						hibernateSession.load(foundRule,
 								Integer.parseInt(id.toString()));
 						System.out.println("Rule id: " + foundRule.getId());
-					//	System.out.println("id num: " + id.toString());
-						System.out.println("insert trigger: " + foundRule.getInsertTrigger());
-						System.out.println("update trigger: " + foundRule.getUpdateTrigger());;
-						System.out.println("delete trigger: " + foundRule.getDeleteTrigger());
-						System.out.println("ruletypename: " + foundRule.getRuleType().getName());
+						// System.out.println("id num: " + id.toString());
+						System.out.println("insert trigger: "
+								+ foundRule.getInsertTrigger());
+						System.out.println("update trigger: "
+								+ foundRule.getUpdateTrigger());
+						;
+						System.out.println("delete trigger: "
+								+ foundRule.getDeleteTrigger());
+						System.out.println("ruletypename: "
+								+ foundRule.getRuleType().getName());
 						if (foundRule.isToBeGenerated() == true) {
-							rules.add(foundRule);
+							if (!rules.contains(foundRule)) {
+								rules.add(foundRule);
+							}
 						}
 					}
 				}
@@ -92,7 +98,7 @@ public class GenerateController {
 			}
 
 			tx.commit();
-	//		hibernateSession.flush();
+			// hibernateSession.flush();
 
 		} catch (HibernateException e) {
 			if (tx != null)
@@ -101,8 +107,7 @@ public class GenerateController {
 		} finally {
 			hibernateSession.close();
 		}
-		
-		
+
 		return list;
 	}
 
@@ -113,6 +118,5 @@ public class GenerateController {
 	public void setParser(Parser parser) {
 		this.parser = parser;
 	}
-
 
 }

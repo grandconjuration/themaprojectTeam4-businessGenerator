@@ -199,7 +199,6 @@ public class Parser {
 		String s = ":NEW.";
 		AppColumn a = rule.returnColumn(0);
 		s += a.getName();
-		System.out.println("kaas is saak: sssssssssssssssssssssssssssssssssss" + a.getName());
 		return s;
 	}
 }

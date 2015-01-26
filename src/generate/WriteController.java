@@ -65,7 +65,9 @@ public class WriteController {
 						System.out.println("delete trigger: " + foundRule.getDeleteTrigger());
 						System.out.println("ruletypename: " + foundRule.getRuleType().getName());
 						if (foundRule.getWriteToDb() == true) {
-							rules.add(foundRule);
+							if (!rules.contains(foundRule)) {
+								rules.add(foundRule);
+							}
 						}
 					}
 				}
