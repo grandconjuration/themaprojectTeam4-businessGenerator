@@ -2,8 +2,8 @@ package generate;
 
 import java.util.Scanner;
 
+import domain.AppColumn;
 import domain.Rule;
-import domain.RuleColumn;
 import domain.Value;
 
 public class Parser {
@@ -76,6 +76,24 @@ public class Parser {
 			case "Rule_trigger":
 				s = getAllTriggers(rule);
 				break;
+			case "Table_new":
+				s = getTableNew(rule);
+				break;
+			case "Table_comp":
+				s = getTableComp(rule);
+				break;
+			case "Column_comp":
+				s = getColumnComp(rule);
+				break;
+			case "Column_new":
+				s = getColumnNew(rule);
+				break;
+			case "Column_pk":
+				s = getColumnPk(rule);
+				break;
+			case "Column_fk":
+				s = getColumnFk(rule);
+				break;
 		}
 
 		return s;
@@ -139,6 +157,48 @@ public class Parser {
 			s += " delete or ";
 		}
 		s = s.substring(0, s.length() - 3);
+		return s;
+	}
+	
+	public String getTableNew(Rule rule){
+		String s = "";
+		AppColumn a = rule.returnColumn(0);
+		s += a.getTable().getName();
+		return s;
+	}
+	
+	public String getTableComp(Rule rule){
+		String s = "";
+		AppColumn a = rule.returnColumn(2);
+		s += a.getTable().getName();
+		return s;
+	}
+	
+	public String getColumnNew(Rule rule){
+		String s = ":NEW.";
+		AppColumn a = rule.returnColumn(1);
+		s += a.getName();
+		return s;
+	}
+	
+	public String getColumnComp(Rule rule){
+		String s = "";
+		AppColumn a = rule.returnColumn(3);
+		s += a.getName();
+		return s;
+	}
+	
+	public String getColumnPk(Rule rule){
+		String s = "";
+		AppColumn a = rule.returnColumn(2);
+		s += a.getName();
+		return s;
+	}
+	
+	public String getColumnFk(Rule rule){
+		String s = ":NEW.";
+		AppColumn a = rule.returnColumn(0);
+		s += a.getName();
 		return s;
 	}
 }
