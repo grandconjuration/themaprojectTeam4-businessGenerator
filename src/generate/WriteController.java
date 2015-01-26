@@ -1,11 +1,10 @@
 package generate;
 
-import hibernate.HibernateConnector;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Hibernate;
+import hibernate.HibernateConnector;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -16,24 +15,20 @@ import domain.AppColumn;
 import domain.AppTable;
 import domain.Application;
 import domain.Rule;
-import domain.RuleColumn;
-import domain.RuleColumnPK;
 
-public class GenerateController {
-	private Parser parser;
+public class WriteController {
+
 	private Session hibernateSession;
+	private Writer writer;
 
-	public GenerateController() {
-		parser = new Parser();
+	public WriteController() {
 		SessionFactory factory = new HibernateConnector().getSessionFactory();
 		hibernateSession = factory.openSession();
-
 	}
-
-	public ArrayList<String> generate(int idApp) {
+	
+	public void write(int idApp) {
 		Transaction tx = null;
 		List<Rule> rules = new ArrayList<Rule>();
-		ArrayList<String> list = new ArrayList<String>();
 
 		try {
 			tx = hibernateSession.beginTransaction();
@@ -69,7 +64,7 @@ public class GenerateController {
 						System.out.println("update trigger: " + foundRule.getUpdateTrigger());;
 						System.out.println("delete trigger: " + foundRule.getDeleteTrigger());
 						System.out.println("ruletypename: " + foundRule.getRuleType().getName());
-						if (foundRule.isToBeGenerated() == true) {
+						if (foundRule.getWriteToDb() == true) {
 							rules.add(foundRule);
 						}
 					}
@@ -77,22 +72,15 @@ public class GenerateController {
 
 			}
 
-			System.out.println(rules.size());
-			for (Rule rule : rules) {
-				System.out.println(rule.getErrorMessage());
+			
+			Writer writer = this.getWriter(application.getDatabaseType());
+			
+			for(Rule rule : rules) {
+				writer.writeToDataBase(application, rule.getGeneratedCode());
+				rule.setWriteToDb(false);
+				hibernateSession.merge(rule);
 			}
-
-			for (Rule r : rules) {
-				if (r.isToBeGenerated()) {
-					String generatedCode = parser.generateCode(r);
-					r.setGeneratedCode(generatedCode);
-					hibernateSession.merge(r);
-					list.add(generatedCode);
-				}
-			}
-
 			tx.commit();
-	//		hibernateSession.flush();
 
 		} catch (HibernateException e) {
 			if (tx != null)
@@ -100,19 +88,21 @@ public class GenerateController {
 			e.printStackTrace();
 		} finally {
 			hibernateSession.close();
+		}		
+	}
+	
+	public Writer getWriter(String a) {
+		if (a.equals("mysql")) {
+			writer = new MySQLWriter();
+		} else if (a.equals("oracle")) {
+			writer = new OracleWriter();
 		}
-		
-		
-		return list;
+		return writer;
 	}
 
-	public Parser getParser() {
-		return parser;
+	public void setWriter(Writer writer) {
+		this.writer = writer;
 	}
-
-	public void setParser(Parser parser) {
-		this.parser = parser;
-	}
-
+	
 
 }

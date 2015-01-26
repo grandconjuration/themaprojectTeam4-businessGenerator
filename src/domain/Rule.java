@@ -42,11 +42,10 @@ public class Rule {
 
 	@Column(name = "GENERATEDCODE")
 	private String generatedCode;
-
-//	@ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-//	@JoinTable(name = "RULECOLUMNS", joinColumns = @JoinColumn(name = "RULE_ID"), inverseJoinColumns = @JoinColumn(name = "COLUMN_ID"))
-//	private List<AppColumn> allColumns = new ArrayList<AppColumn>();
 	
+	@Column(name = "WRITETODB")
+	private Boolean writeToDb = false;
+
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "pk.rule", cascade = CascadeType.ALL)
 	private Set<RuleColumn> ruleColumns = new HashSet<RuleColumn>();
 
@@ -201,6 +200,14 @@ public class Rule {
 	public void setOperator(Operator operator) {
 		this.operator = operator;
 	}
+	
+	public Boolean getWriteToDb() {
+		return writeToDb;
+	}
+
+	public void setWriteToDb(Boolean writeToDb) {
+		this.writeToDb = writeToDb;
+	}	
 	
 	public String returnValue(int number){
 		String s = null;
