@@ -87,7 +87,7 @@ public class GenerateController {
 				if (r.isToBeGenerated()) {
 					String generatedCode = parser.generateCode(r);
 					r.setGeneratedCode(generatedCode);
-					hibernateSession.saveOrUpdate(r);
+					hibernateSession.merge(r);
 					list.add(generatedCode);
 				}
 			}
