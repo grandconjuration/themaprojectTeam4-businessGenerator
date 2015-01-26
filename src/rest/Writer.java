@@ -12,6 +12,6 @@ public class Writer {
 	   public String get(@PathParam("appid") String subResources) {
 		   WriteController wc = new WriteController();
 		   wc.write(Integer.parseInt(subResources));
-		   return "Generated code geschreven naar targetdatabase";
+		   return "Generated code written to target database.";
 	   }
 }
