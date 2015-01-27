@@ -92,6 +92,7 @@ public class GenerateController {
 				if (r.isToBeGenerated()) {
 					String generatedCode = parser.generateCode(r);
 					r.setGeneratedCode(generatedCode);
+					r.setToBeGenerated(false);
 					hibernateSession.merge(r);
 					list.add(generatedCode);
 				}
